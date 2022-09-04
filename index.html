@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+    <script src="https://unpkg.com/redux@latest/dist/redux.min.js"></script>
+  </head>
+  <body>
+    <div>
+      <p>
+        Counter : <span id="value">0</span> times
+        <button id="increment">+</button>
+        <button id="decrement">-</button>
+        <button id="incrementIfOdd">Increment if add</button>
+        <button id="incrementAsync">Increment async</button>
+      </p>
+    </div>
+    <script>
+      function counter(state = 0, action) {
+        switch (action.type) {
+          case "INCREMENT":
+            return state + 1;
+
+          case "DECREMENT":
+            return state - 1;
+
+          default:
+            return state;
+        }
+      }
+      const store = Redux.createStore(counter);
+
+      function render() {
+        const valueEl = document.getElementById("value");
+        valueEl.innerHTML = store.getState().toString();
+        console.log(store.subscribe);
+      }
+      render();
+      store.subscribe(render);
+
+      document
+        .getElementById("increment")
+        .addEventListener("click", () => store.dispatch({ type: "INCREMENT" }));
+      document
+        .getElementById("decrement")
+        .addEventListener("click", () => store.dispatch({ type: "DECREMENT" }));
+      document
+        .getElementById("incrementIfOdd")
+        .addEventListener("click", () => {
+          if (store.getState() % 2 !== 0) {
+            store.dispatch({ type: "INCREMENT" });
+          }
+        });
+      document
+        .getElementById("incrementAsync")
+        .addEventListener("click", () =>
+          setTimeout(() => store.dispatch({ type: "INCREMENT" }), 1000)
+        );
+    </script>
+  </body>
+</html>
